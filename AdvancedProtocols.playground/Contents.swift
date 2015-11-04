@@ -26,10 +26,7 @@ protocol Drivable {
     func reverse()
 }
 
-protocol Vehicle: Brakeable, Drivable {
-    var numberOfSeats: Int { get }
+func registerForRace(vehicle: protocol<Drivable, Brakeable>) {
+    print("Start the race!")
 }
 
-protocol Car: Brakeable, Drivable {
-    var numberOfDoors: Int { get }
-}
