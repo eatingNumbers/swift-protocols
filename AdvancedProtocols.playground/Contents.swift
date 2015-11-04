@@ -1,5 +1,8 @@
 // Advanced Protocols
 
+import Foundation
+import UIKit
+
 protocol Printable {
     func description() -> String
 }
@@ -30,3 +33,7 @@ func registerForRace(vehicle: protocol<Drivable, Brakeable>) {
     print("Start the race!")
 }
 
+let collectionViewLayout = UICollectionViewLayout()
+let collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewLayout)
+
+                     
