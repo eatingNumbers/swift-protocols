@@ -28,6 +28,10 @@ friend.fullName
 
 import Foundation
 
+protocol Payable {
+    func pay() -> (basePay: Int, benefits: Int, deductions: Int, vacationTime: Int)
+}
+
 class Employee {
     let name: String
     let address: String
@@ -44,20 +48,18 @@ class Employee {
         type = employeeType
     }
     
-    func pay() -> (basePay: Int, benefits: Int, deductions: Int, vacationTime: Int) {
-        return (0,0,0,0)
-    }
 }
 
-class HourlyEmployee: Employee {
+class HourlyEmployee: Employee, Payable {
     
     let hourlyWage = 12
     let hoursWorked = 40
     let availableVacation = 0
     
-    override func pay() -> (basePay: Int, benefits: Int, deductions: Int, vacationTime: Int) {
-        return (hourlyWage * hoursWorked, 0, 0, availableVacation)
+    func pay() -> (basePay: Int, benefits: Int, deductions: Int, vacationTime: Int) {
+      return ((hourlyWage * hoursWorked), 0, 0, availableVacation)
     }
+    
 }
 
 class SalariedEmployee: Employee {
@@ -65,3 +67,89 @@ class SalariedEmployee: Employee {
     let salary = 40000
     
 }
+
+// Modeling Loose Relationships
+
+protocol Blendable {
+    func blend()
+}
+
+class Fruit: Blendable {
+    var name: String
+    
+    init(name: String) {
+        self.name = name
+    }
+    func blend() {
+        print("Wrrrrrrrr")
+    }
+}
+
+class Dairy {
+    var name: String
+    
+    init(name: String) {
+        self.name = name
+    }
+}
+
+class Cheese: Dairy {
+    
+}
+
+class Milk: Dairy, Blendable {
+    func blend() {
+        print("Wrrrrrrrrrrr")
+    }
+}
+
+func makeSmoothie(ingredients: [Blendable]) {
+    print("Smoothie time!")
+}
+
+let strawberry = Fruit(name: "Strawberry")
+let cheddar = Cheese(name: "Cheddar Cheese")
+let chocolateMilk = Milk(name: "Chocolate")
+
+let ingredients: [Blendable] = [strawberry, chocolateMilk]
+makeSmoothie(ingredients)
+
+// Random Number Generator
+
+protocol RandomNumberGenerator {
+    func random() -> Double
+}
+
+class LinearCongruentialGenerator: RandomNumberGenerator {
+    var lastRandom = 42.0
+    let m = 139968.0
+    let a = 3877.0
+    let c = 29573.0
+    
+    func random() -> Double {
+        lastRandom = ((lastRandom * a + c) % m)
+        return lastRandom/m
+    }
+}
+
+class Dice {
+    let sides: Int
+    let generator: RandomNumberGenerator
+    init(sides: Int, generator: RandomNumberGenerator) {
+        self.sides = sides
+        self.generator = generator
+    }
+    
+    func roll() -> Int {
+        return Int(generator.random() * Double(sides)) + 1
+    }
+}
+
+var d6 = Dice(sides: 6, generator: LinearCongruentialGenerator())
+
+
+
+
+
+
+
